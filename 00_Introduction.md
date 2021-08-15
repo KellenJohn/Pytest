@@ -29,17 +29,22 @@ https://ppfocus.com/mo/0/diaa73ff9.html
 * pytest 可使用的配置檔眾多，pytest.ini 文件會優先於其他文件，即使是空的。
 
 
-pytest-cov 測試覆蓋率
---cov=[SOURCE]: 測試包含的程式碼範圍
---cov-report=TYPE: 測試覆蓋率報告的種類 (term, term-missing, annotate, html, xml)
---cov-fail-under=MIN: 如果覆蓋率小於 MIN 則跳出
+#### pytest-cov 測試覆蓋率
+> * --cov=[SOURCE]: 測試包含的程式碼範圍
+> * --cov-report=TYPE: 測試覆蓋率報告的種類 (term, term-missing, annotate, html, xml)
+> * --cov-fail-under=MIN: 如果覆蓋率小於 MIN 則跳出
 其中 --cov, --cov-report 都可以加入多個參數
+
+
+
 
 例如
 ```sh
 pipenv run pytest --cov=report_generator --cov-report=term-missing test/
 ```
+從下面的結果可以看到哪些檔案的哪些部分沒有被測試到
 
+![image](https://github.com/KellenJohn/Pytest/blob/main/pytest01.jpg)
 
 ```sh
 [pytest]
