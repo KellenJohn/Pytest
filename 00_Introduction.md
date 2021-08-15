@@ -1,12 +1,13 @@
 ## Pytest
 * [Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
 * [★Python Table Manners - 測試 (二)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/9fb680151c5e4bf38ab35eebd0a35c4b)
-* 
+* [Wendy](https://hackmd.io/@esun-mlops/HkTZCsJOu)
 未消化
-https://zhuanlan.zhihu.com/p/84138685
-https://www.gushiciku.cn/pl/gCot/zh-tw
-https://www.cnblogs.com/bainianminguo/p/13773717.html
-
+* https://zhuanlan.zhihu.com/p/84138685
+* https://www.gushiciku.cn/pl/gCot/zh-tw
+* https://www.cnblogs.com/bainianminguo/p/13773717.html
+* https://note.qidong.name/2019/01/pytest-httpserver/
+* https://note.qidong.name/2018/02/pytest-mock/
 
 單元測試
 pytest 結合 Allure2 產生精美的測試報表
@@ -149,11 +150,22 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 
 #### 基本 Configuration files (3)：.coveragerc 設定檔
 有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：
+計算 coverage 的額外設定檔，可以設定計算時忽略的檔案以及不需測試的程式碼列表，可以放於根目錄或測試程式目錄並於 pytest.ini 指定位置
+
 ```python
 [run]
-omit =
+omit = 
+    # omit all files in this directory
+    api/*
     */__init__.py
-    */migrations/*
+    # omit this single file
+    src/tirefire.py
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:
+    except ImportError:
+    pass    
 ```
 ---
 ### 測試例外事件
