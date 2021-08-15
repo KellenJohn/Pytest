@@ -1,5 +1,5 @@
 ## Pytest
-* [★Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
+* [Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
 * [★Python Table Manners - 測試 (二)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/9fb680151c5e4bf38ab35eebd0a35c4b)
 * 
 未消化
@@ -63,7 +63,8 @@ https://ppfocus.com/mo/0/diaa73ff9.html
 
 
 #### pytest-cov 測試覆蓋率
-> * --cov=[SOURCE]: 測試包含的程式碼範圍
+> * --cov=[SOURCE]: 測試包含的程式碼範圍(如果我們想指定執行專案裡面的某個模)
+>                   也可以指定具體的py模組名稱 pytest --cov=src.pay 但不能寫成pytest --cov=src/pay.py
 > * --cov-report=TYPE: 測試覆蓋率報告的種類 (term, term-missing, annotate, html, xml)
 > * --cov-fail-under=MIN: 如果覆蓋率小於 MIN 則跳出
 其中 --cov, --cov-report 都可以加入多個參數
@@ -108,7 +109,7 @@ pipenv run pytest --cov=report_generator --cov-report=term-missing test/
 pipenv run pytest --cov=report_generator --cov-report=term-missing --cov-report=html
 ```
 
-#### conftest.py
+#### 基本 Configuration files (2)：conftest.py
 conftest.py 是 pytest 中的一個特殊檔案
 如果是整個套件（同一個資料夾）都會用到的 fixture 就能放在這， pytest 執行時會自動載入
 
@@ -145,6 +146,16 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 --fixtures: 列出所有 fixtures
 ```
 
+
+#### 基本 Configuration files (3)：.coveragerc 設定檔
+有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：
+```python
+[run]
+omit =
+    */__init__.py
+    */migrations/*
+```
+---
 ### 測試例外事件
 透過 pytest.raise 確認測試案例是否有符合預期的丟出例外事件
 ```python
