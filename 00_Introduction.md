@@ -22,6 +22,51 @@ https://myapollo.com.tw/zh-tw/python-prettify-long-string/
 https://ppfocus.com/mo/0/diaa73ff9.html
 
 
+
+
+### 基本 Configuration files (1)：pytest.ini
+* pytest initial 時會參考的配置檔，可以在裡面設定每次 pytest 要使用的設定，通常放置於 repo 的根目錄或測試目錄中。
+* pytest 可使用的配置檔眾多，pytest.ini 文件會優先於其他文件，即使是空的。
+
+
+pytest-cov 測試覆蓋率
+--cov=[SOURCE]: 測試包含的程式碼範圍
+--cov-report=TYPE: 測試覆蓋率報告的種類 (term, term-missing, annotate, html, xml)
+--cov-fail-under=MIN: 如果覆蓋率小於 MIN 則跳出
+其中 --cov, --cov-report 都可以加入多個參數
+
+例如
+```sh
+pipenv run pytest --cov=report_generator --cov-report=term-missing test/
+```
+
+
+```sh
+[pytest]
+addopts = -v -s
+          --cov=tests
+          --cov=server_info
+          --cov-report=term-missing
+          --cov-report=html
+          --cov-config=tests/.coveragerc
+          
+testpaths = tests
+python_files = test_*.py
+python_classes = Test*
+python_function = test_*
+
+
+markers = 
+    xlsreader:
+    bauu:
+```
+
+
+
+
+
+
+
 https://blog.csdn.net/weixin_38374974/article/details/107245534
 raises： 在断言一些代码块或者函数时会引发意料之中的异常或者其他失败的异常，导致程序无法运行时，使用 raises 捕获匹配到的异常，可以继续让代码正常运行。
 
