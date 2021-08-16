@@ -123,3 +123,108 @@ if __name__ == '__main__':
 第二種方法中的第一個參數是通過完整的路徑進行找到需要mock的對象，第2個參數是mock的值。
 通過執行發現，兩種方法都是可以mock成功的。
 原文網址：https://kknews.cc/code/oq6nbb6.html
+
+
+
+
+其中，get_product_status_by_id 方法還沒有實現；buy_product 方法依賴於 get_product_status_by_id 方法的返回值
+# product_impl.py
+```python
+class Product(object):
+
+    def __init__(self):
+        pass
+
+    def get_product_status_by_id(self, product_id):
+        """
+        通過商品id獲取產品資訊（Mock）
+        :return:
+        """
+        # 待實現查詢資料庫的業務邏輯
+        pass
+
+    def buy_product(self, product_id):
+        """
+        購買產品（真實邏輯）
+        :return:
+        """
+        # 產品資訊
+        # {"id":1,"name":"蘋果","num":23}
+        product = self.get_product_status_by_id(product_id)
+
+        if product.get("num") >= 1:
+            result = {"status": 0, "msg": "購買成功！"}
+        else:
+            result = {"status": 1, "msg": "購買失敗，庫存不足！"}
+
+        return result
+```        
+#### unittest mock        
+* 匯入 unittest 框架中的 mock 檔案
+* 例項化 Product 物件
+* mock.Mock(return_value=*) 方法
+* 對 get_product_status_by_id 方法進行 Mock
+* 呼叫並斷言
+
+```python
+import unittest
+from unittest import mock
+
+from unittest_mock.product_impl import Product
+
+class TestProduct(unittest.TestCase):
+
+    def test_success(self):
+        # 成功結果
+        mock_success_value = {"id": 1, "name": "蘋果", "num": 23}
+
+        product = Product()
+
+        product.get_product_status_by_id = mock.Mock(return_value=mock_success_value)
+
+        # 呼叫實際函式
+        assert product.buy_product(1).get("status") == 0
+
+if __name__ == "__main__":
+    unittest.main()       
+```
+#### pytest.mock
+相比 unittest，pytest 由於強大的外掛支援，使用者群體可能更大！
+如果專案本身使用的框架是 pytest，則 Mock 更建議使用 pytest-mock 這個外掛
+Mock 步驟如下：
+* 使用 pytest 編寫測試方法，引數為 mocker
+* 例項化 Product 物件
+* 使用 mocker.patch() 方法對 get_product_status_by_id 方法進行 Mock，並設定返回值
+* 呼叫並斷言
+
+```python
+
+import pytest
+
+from pytest_mock_.product_impl import Product
+
+def test_buy_product_success(mocker):
+    """
+    購買成功Mock
+    :param mocker:
+    :return:
+    """
+    # 例項化一個產品物件
+    product = Product()
+
+    # 對Product中的方法的返回值進行Mock
+    mock_value = {"id": 1, "name": "蘋果", "num": 23}
+
+    # Mock方法
+    # 注意：需要指定方法的完整路徑
+    # mocker.patch 的第一個引數必須是模擬物件的具體路徑，第二個引數用來指定返回值
+    product.get_product_status_by_id = mocker.patch("product_impl.Product.get_product_status_by_id",
+                                                    return_value=mock_value)
+
+    # 呼叫購買產品的方法
+    result = product.buy_product(1)
+
+    assert result.get("status") == 0
+
+```
+需要注意的是，mocker.patch 方法第一個引數必須是 Mock 物件的完整路徑
