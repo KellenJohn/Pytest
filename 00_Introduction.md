@@ -8,10 +8,12 @@
 * https://www.cnblogs.com/bainianminguo/p/13773717.html
 * https://note.qidong.name/2019/01/pytest-httpserver/
 * https://note.qidong.name/2018/02/pytest-mock/
+★封神之路
+* https://codingnote.cc/zh-tw/p/207951/
 
-IT人
+★IT人
 https://iter01.com/596979.html
-dict
+★dict
 https://mmx362003.gitbooks.io/pytest-guide/content/chapter1/14-pytest-fixture-param-and-parametrize.html
 
 單元測試
