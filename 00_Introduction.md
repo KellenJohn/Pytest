@@ -9,6 +9,11 @@
 * https://note.qidong.name/2019/01/pytest-httpserver/
 * https://note.qidong.name/2018/02/pytest-mock/
 
+IT人
+https://iter01.com/596979.html
+dict
+https://mmx362003.gitbooks.io/pytest-guide/content/chapter1/14-pytest-fixture-param-and-parametrize.html
+
 單元測試
 pytest 結合 Allure2 產生精美的測試報表
 https://myapollo.com.tw/zh-tw/python-pytest-allure2-test-report-tool/
@@ -62,7 +67,6 @@ https://ppfocus.com/mo/0/diaa73ff9.html
 * pytest initial 時會參考的配置檔，可以在裡面設定每次 pytest 要使用的設定，通常放置於 repo 的根目錄或測試目錄中。
 * pytest 可使用的配置檔眾多，pytest.ini 文件會優先於其他文件，即使是空的。
 
-
 #### pytest-cov 測試覆蓋率
 > * --cov=[SOURCE]: 測試包含的程式碼範圍(如果我們想指定執行專案裡面的某個模)
 >                   也可以指定具體的py模組名稱 pytest --cov=src.pay 但不能寫成pytest --cov=src/pay.py
@@ -111,8 +115,9 @@ pipenv run pytest --cov=report_generator --cov-report=term-missing --cov-report=
 ```
 
 #### 基本 Configuration files (2)：conftest.py
-conftest.py 是 pytest 中的一個特殊檔案
-如果是整個套件（同一個資料夾）都會用到的 fixture 就能放在這， pytest 執行時會自動載入
+* pytest在執行任何一個單元測試的時候，最靠近執行目錄下的那個conftest.py將被自動執行。
+* conftest.py 是 pytest 中的一個特殊檔案
+* 如果是整個套件（同一個資料夾）都會用到的 fixture 就能放在這， pytest 執行時會自動載入
 
 以下面的結構為例，<font color=#800000> `test_sponsor.py`</font> 就會自動載入上層的 conftest.py 中的 fixture
 
