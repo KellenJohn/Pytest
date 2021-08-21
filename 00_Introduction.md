@@ -340,6 +340,8 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 fixture的順序優先按scope從大到小，session > package > module > class > function。</br>
 `autouse`的fixture會優先於相同scope的其他fixture(預設執行) </br>
 
+
+觀察 object ID
 ```python
 import pytest
 
@@ -361,15 +363,14 @@ def test_db_b(db):
 
 # -------------------------------------------------------------------------------------------
 
-test_fixture.py::test_db_a 140579362456192
+test_fixture.py::test_db_a 140525131708976
 FAILED
-test_fixture.py::test_db_b 140579362457488
-FAILED
+test_fixture.py::test_db_b FAILED
 
 ========================================= FAILURES ==========================================
 _________________________________________ test_db_a _________________________________________
 
-db = <test_fixture.DB object at 0x7fdb2ef64280>
+db = <test_fixture.DB object at 0x7fce8e8eba30>
 
     def test_db_a(db):
 >       assert 1 == 2
@@ -380,7 +381,7 @@ E         -2
 test_fixture.py:14: AssertionError
 _________________________________________ test_db_b _________________________________________
 
-db = <test_fixture.DB object at 0x7fdb2ef64790>
+db = <test_fixture.DB object at 0x7fce8e8eba30>
 
     def test_db_b(db):
 >       assert 1 == 2
@@ -392,7 +393,8 @@ test_fixture.py:17: AssertionError
 ================================== short test summary info ==================================
 FAILED test_fixture.py::test_db_a - assert 1 == 2
 FAILED test_fixture.py::test_db_b - assert 1 == 2
-===================================== 2 failed in 0.09s =====================================
+===================================== 2 failed in 0.04s =====================================
+
 ```
 
 ```python
