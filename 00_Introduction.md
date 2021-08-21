@@ -333,6 +333,63 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 表示 fixture 會在哪個階段前準備資源，並在哪個階段後清除 </br>
 如果設定成 function，就會在每一個測試函式執行前和後做資源的處理 </br>
 
+* function 每個函數運行一次，函數結束時銷毀
+* class 每個類運行一次，類結束時銷毀
+* module 每個模組運行一次，模組結束時銷毀
+* package 每個包運行一次，包結束時銷毀
+* session 每個會話運行一次，會話結束時銷毀
+fixture的順序優先按scope從大到小，session > package > module > class > function。</br>
+`autouse`的fixture會優先於相同scope的其他fixture(預設執行) </br>
+
+```python
+import pytest
+
+# fixtures documentation order example
+order = []
+
+
+@pytest.fixture(scope="session")
+def s1():
+    order.append("s1")
+
+
+@pytest.fixture(scope="module")
+def m1():
+    order.append("m1")
+
+
+@pytest.fixture
+def f1(f3):
+    order.append("f1")
+
+
+@pytest.fixture
+def f3():
+    order.append("f3")
+
+
+@pytest.fixture(autouse=True)
+def a1():
+    order.append("a1")
+
+
+@pytest.fixture
+def f2():
+    order.append("f2")
+
+def test_order(f1, m1, f2, s1):
+    assert order == ["s1", "m1", "a1", "f3", "f1", "f2"]
+```
+
+雖然test_order()是按f1, m1, f2, s1調用的，但是結果卻不是按這個順序
+
+1. s1 scope為session
+2. m1 scope為module
+3. a1 autouse，默認function，後於session、module，先於function其他fixture
+4. f3 被f1依賴
+5. f1 test_order()參數列表第1個
+6. f2 test_order()參數列表第3個
+
 
 
 
