@@ -343,6 +343,61 @@ fixture的順序優先按scope從大到小，session > package > module > class 
 ```python
 import pytest
 
+
+class DB(object):
+    def __init__(self):
+        print(id(self))
+
+@pytest.fixture(scope="module")
+def db():
+    return DB()
+
+
+def test_db_a(db):
+    assert 1 == 2
+
+def test_db_b(db):
+    assert 1 == 2
+
+# -------------------------------------------------------------------------------------------
+
+test_fixture.py::test_db_a 140579362456192
+FAILED
+test_fixture.py::test_db_b 140579362457488
+FAILED
+
+========================================= FAILURES ==========================================
+_________________________________________ test_db_a _________________________________________
+
+db = <test_fixture.DB object at 0x7fdb2ef64280>
+
+    def test_db_a(db):
+>       assert 1 == 2
+E       assert 1 == 2
+E         +1
+E         -2
+
+test_fixture.py:14: AssertionError
+_________________________________________ test_db_b _________________________________________
+
+db = <test_fixture.DB object at 0x7fdb2ef64790>
+
+    def test_db_b(db):
+>       assert 1 == 2
+E       assert 1 == 2
+E         +1
+E         -2
+
+test_fixture.py:17: AssertionError
+================================== short test summary info ==================================
+FAILED test_fixture.py::test_db_a - assert 1 == 2
+FAILED test_fixture.py::test_db_b - assert 1 == 2
+===================================== 2 failed in 0.09s =====================================
+```
+
+```python
+import pytest
+
 # fixtures documentation order example
 order = []
 
