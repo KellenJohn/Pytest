@@ -352,7 +352,44 @@ def test_add(x, y, expected_sum):
     assert x + y == expected_sum
 ```
 
+@pytest.mark.parametrize 直接定義在test method上面
+這樣的好處是可以針對這個method 去跑特定的參數，透過定義@pytest.mark.parametrize 傳入ARRAY
 
+```python
+import pytest
+@pytest.mark.parametrize("test_input,expected", [
+    ("3+5", 8),
+    ("2+4", 6),
+    ("6*9", 42),
+])
+
+def test_eval(test_input, expected):
+    assert eval(test_input) == expected
+    
+>>> test_fixture.py::test_eval[3+5-8] PASSED
+>>> test_fixture.py::test_eval[2+4-6] PASSED
+>>> test_fixture.py::test_eval[6*9-42] FAILED
+
+========================================= FAILURES ==========================================
+_____________________________________ test_eval[6*9-42] _____________________________________
+
+test_input = '6*9', expected = 42
+
+    @pytest.mark.parametrize("test_input,expected", [
+        ("3+5", 8),
+        ("2+4", 6),
+        ("6*9", 42),
+    ])
+    def test_eval(test_input, expected):
+>       assert eval(test_input) == expected
+E       assert 54 == 42
+E         +54
+E         -42
+
+test_fixture.py:8: AssertionError
+================================== short test summary info ==================================
+FAILED test_fixture.py::test_eval[6*9-42] - assert 54 == 42
+```
 
 
 
