@@ -569,3 +569,34 @@ test_fixture.py::test_eval[6*9-42] XFAIL
 =============================== 2 passed, 1 xfailed in 0.05s ================================
 
 ```
+
+
+
+#### Custom Mark
+pytest 還支援將不同的測試標上不同的標籤，讓你可以利用標籤將測試分組，使你可只執行某個標籤相關的所有測試就好。
+
+test_mark.py
+```python
+# -*- coding: utf-8 -*-
+import pytest
+
+
+@pytest.mark.my_mark
+def test_a():
+    assert 1 == 1
+
+
+@pytest.mark.not_my_mark
+def test_b():
+    assert 2 == 2
+$ py.test -m my_mark
+================== test session starts ==================
+platform linux2 -- Python 2.7.9, pytest-2.8.5, py-1.4.31, pluggy-0.3.1
+rootdir: /home/user/test_mark.py, inifile:
+collected 2 items
+
+test_mark.py .
+
+========= 1 tests deselected by "-m 'my_mark'" ==========
+======== 1 passed, 1 deselected in 0.00 seconds ========
+```
