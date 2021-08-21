@@ -298,7 +298,7 @@ def test_ehlo(smtp_connection):
 ```
 
 ##### 共享
-同一個fixture可被多個測試文件中的多個測試用例共享。只需在包（Package）中定義 conftest.py 文件，并把fixture的定義寫在文件中，則包内所有模塊（Module）的所有測試用例均可使用 conftest.py 中所定義的fixture。如下文件的 test_1/conftest.py 定義了fixture，那 test_a.py 和 test_b.py 可以使用該fixture；而 test_c.py 則無 法使用。
+同一個fixture可被多個測試文件中的多個測試用例共享。只需在包（Package）中定義 conftest.py 文件，并把fixture的定義寫在文件中，則包内所有模塊（Module）的所有測試用例均可使用 conftest.py 中所定義的fixture。如下文件的 test_1/conftest.py 定義了fixture，那 test_a.py 和 test_b.py 可以使用該fixture；而 test_c.py 則無法使用。
 
 ```python
 └── test_1
@@ -332,6 +332,9 @@ PASSED
 fixture 的 scope 共分為五種 （function, class, module, package, session）</br>
 表示 fixture 會在哪個階段前準備資源，並在哪個階段後清除 </br>
 如果設定成 function，就會在每一個測試函式執行前和後做資源的處理 </br>
+
+
+
 
 ### marker
 
@@ -394,6 +397,29 @@ test_fixture.py:8: AssertionError
 ================================== short test summary info ==================================
 FAILED test_fixture.py::test_eval[6*9-42] - assert 54 == 42
 ```
+
+```python
+import pytest
+
+@pytest.mark.skip(reson="skip it")
+def test_a():
+    print("testa")
+ 
+@pytest.mark.parametrize(("name","age"),[("cui1",12),("cui2",13),("cui3",14)])
+def test_b(name,age):
+    print("testb----->{name}----->{age}".format(name = name,age = age))
+
+# -----------------------------------------------------
+test_fixture.py::test_a SKIPPED (unconditional skip)
+test_fixture.py::test_b[cui1-12] testb----->cui1----->12
+PASSED
+test_fixture.py::test_b[cui2-13] testb----->cui2----->13
+PASSED
+test_fixture.py::test_b[cui3-14] testb----->cui3----->14
+PASSED
+
+```
+
 
 
 
