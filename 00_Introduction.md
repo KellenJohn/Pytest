@@ -262,9 +262,20 @@ https://zhuanlan.zhihu.com/p/84138685
 
 
 #### 內建 fixture
-pytest 的fixture和 unittest、nose、nose2的风格迥异，它不但能实现 setUp 和 tearDown这种測試前置和清理逻辑，还其他非常多强大的功能。
 
-宣告和使用
+pytest中，一個fixture其實就是一個函數，函數名就是fixture的名稱。關於fixture，pytest在run一個test方法的時候，大概流程如下：</br>
+
+收集該test方法的作用域內的所有fixture； 這個作用域包括該test case所屬的class，module等不同作用域的疊加（遇到同名的fixture，更里層的會覆蓋更外層的）：</br>
+
+> The discovery of fixtures functions starts at test classes, then test modules, then conftest.py files and finally builtin and third party plugins.
+
+收集該test方法的pytest參數（通過pytest.mark.parametrize來定義）；</br>
+
+對該test方法的輸入根據該作用域內的fixture名稱或pytest參數（遇到pytest參數和fixture同名的，pytest參數會覆蓋fixture）進行填充後執行。</br>
+
+pytest中的fixture提供了一個很好的對象管理方式，我們可以將測試代碼中經常用到的一些對象定義為fixture來統一進行管理，而省去了很多重復的代碼（這點就像with-statement，不但減少了代碼量，而且避免了代碼中類似資源未正確釋放的情況）。</br>
+
+##### 宣告和使用
 pytest 中的fixture更像是測試資源，你只需定義一個 fixture，就可以在用例中直接使用它。得益于 pytest 的依賴注入機制，你無需 from xx import xx 導入，只需要在測試函數的參數中指定同名參數即可
 
 ```python
