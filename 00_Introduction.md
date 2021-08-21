@@ -308,6 +308,27 @@ def test_ehlo(smtp_connection):
     └── test_c.py
 ```
 
+##### fixture params
+@pytest.fixture 定義在fixture 內 透過params去定義
+params 可以傳入object or string value
+
+```python
+@pytest.fixture(scope="function", params=["opt1", "opt2"])
+def optmod(request):
+    return request.param
+def test_params(optmod):
+    print(optmod)
+# --------------------------
+
+>>> test_fixture.py::test_params[opt1] opt1
+PASSED
+>>> test_fixture.py::test_params[opt2] opt2
+PASSED
+
+```
+
+
+
 ### marker
 
 #### 參數化 (parameterize)
