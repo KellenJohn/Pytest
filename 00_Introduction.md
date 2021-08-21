@@ -203,9 +203,9 @@ def test_type_error():
         x + []
 ```
 https://blog.csdn.net/weixin_38374974/article/details/107245534
-raises： 在断言一些代码塊或者函數时会引发意料之中的异常或者其他失败的异常，导致程序无法运行时，使用 raises 捕获匹配到的异常，可以继续让代码正常运行。
+raises： 在断言一些代碼塊或者函數时會引發意料之中的異常或者其他失敗的異常，導致程序无法運行时，使用 raises 捕获匹配到的異常，可以繼續讓代碼正常運行。
 
-预期内异常
+預期内異常
 ```python
 import pytest
 
@@ -216,7 +216,7 @@ def test_raises():
 ```
 
 
-如果我们不知道预期异常的是什么，我们可以使用 match 和 raise 进行自定義异常
+如果我们不知道預期異常的是什麼，我们可以使用 match 和 raise 進行自定義異常
 ```python
 import pytest
 
@@ -233,8 +233,9 @@ def test_raises():
 
 
 參數化 pytest.mark.parametrize
-使用參數化的话，可能会存在一部分用例可能会抛出异常，一部分可能会没有异常导致失败。如果想要其正常执行，則需要一個上下文管理器。这里官方指导使用 does_not_raise
-例：
+使用參數化的话，可能會存在一部分用例可能會抛出異常，一部分可能會没有異常導致失敗。如果想要其正常執行，則需要一個上下文管理器。官方指導使用 `does_not_raise`
+
+範例
 ```python
 from contextlib import contextmanager
 import pytest
@@ -327,7 +328,10 @@ PASSED
 
 ```
 
-
+##### scope
+fixture 的 scope 共分為五種 （function, class, module, package, session）</br>
+表示 fixture 會在哪個階段前準備資源，並在哪個階段後清除 </br>
+如果設定成 function，就會在每一個測試函式執行前和後做資源的處理 </br>
 
 ### marker
 
