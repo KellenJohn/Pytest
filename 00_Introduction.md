@@ -553,3 +553,19 @@ def test_mark_skip_if():
 def test_mark_xfail():
     ...
 ```
+
+```python
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [("3+5", 8), ("2+4", 6), pytest.param("6*9", 42, marks=pytest.mark.xfail)],
+)
+def test_eval(test_input, expected):
+    assert eval(test_input) == expected
+    
+# ---------------------------------------------------
+test_fixture.py::test_eval[3+5-8] PASSED
+test_fixture.py::test_eval[2+4-6] PASSED
+test_fixture.py::test_eval[6*9-42] XFAIL
+=============================== 2 passed, 1 xfailed in 0.05s ================================
+
+```
