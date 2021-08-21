@@ -203,7 +203,7 @@ def test_type_error():
         x + []
 ```
 https://blog.csdn.net/weixin_38374974/article/details/107245534
-raises： 在断言一些代码块或者函数时会引发意料之中的异常或者其他失败的异常，导致程序无法运行时，使用 raises 捕获匹配到的异常，可以继续让代码正常运行。
+raises： 在断言一些代码塊或者函數时会引发意料之中的异常或者其他失败的异常，导致程序无法运行时，使用 raises 捕获匹配到的异常，可以继续让代码正常运行。
 
 预期内异常
 ```python
@@ -216,7 +216,7 @@ def test_raises():
 ```
 
 
-如果我们不知道预期异常的是什么，我们可以使用 match 和 raise 进行自定义异常
+如果我们不知道预期异常的是什么，我们可以使用 match 和 raise 进行自定義异常
 ```python
 import pytest
 
@@ -232,8 +232,8 @@ def test_raises():
 ```
 
 
-参数化 pytest.mark.parametrize
-使用参数化的话，可能会存在一部分用例可能会抛出异常，一部分可能会没有异常导致失败。如果想要其正常执行，则需要一个上下文管理器。这里官方指导使用 does_not_raise
+參數化 pytest.mark.parametrize
+使用參數化的话，可能会存在一部分用例可能会抛出异常，一部分可能会没有异常导致失败。如果想要其正常执行，則需要一個上下文管理器。这里官方指导使用 does_not_raise
 例：
 ```python
 from contextlib import contextmanager
@@ -260,6 +260,44 @@ def test_division(example_input, expectation):
 
 https://zhuanlan.zhihu.com/p/84138685
 
+
+#### 內建 fixture
+pytest 的fixture和 unittest、nose、nose2的风格迥异，它不但能实现 setUp 和 tearDown这种測試前置和清理逻辑，还其他非常多强大的功能。
+
+宣告和使用
+pytest 中的fixture更像是測試資源，你只需定義一個 fixture，就可以在用例中直接使用它。得益于 pytest 的依賴注入機制，你無需 from xx import xx 導入，只需要在測試函數的參數中指定同名參數即可
+
+```python
+import pytest
+
+
+@pytest.fixture
+def smtp_connection():
+    import smtplib
+
+    return smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
+
+
+def test_ehlo(smtp_connection):
+    response, msg = smtp_connection.ehlo()
+    assert response == 250
+```
+
+定義了一個fixture smtp_connection，在測試函數 test_ehlo 定義了同名參數，則 pytest 框架會自動注入該變量。
+
+
+共享
+同一個fixture可被多個測試文件中的多個測試用例共享。只需在包（Package）中定義 conftest.py 文件，并把fixture的定義寫在文件中，則包内所有模塊（Module）的所有測試用例均可使用 conftest.py 中所定義的fixture。如下文件的 test_1/conftest.py 定義了fixture，那 test_a.py 和 test_b.py 可以使用該fixture；而 test_c.py 則無 法使用。
+
+```python
+└── test_1
+    ├──  conftest.py
+    ├──  test_a.py
+    └── test_b.py
+└── test_2
+    └── test_c.py
+```
+
 ### marker
 
 #### 參數化 (parameterize)
@@ -282,28 +320,10 @@ import pytest
 def test_add(x, y, expected_sum):
     assert x + y == expected_sum
 ```
-#### 內建 fixture
-
-测试夹具（Fixtures）
-pytest 的测试夹具和 unittest、nose、nose2的风格迥异，它不但能实现 setUp 和 tearDown这种测试前置和清理逻辑，还其他非常多强大的功能。
-
-4.1 声明和使用
-pytest 中的测试夹具更像是测试资源，你只需定义一个夹具，然后就可以在用例中直接使用它。得益于 pytest 的依赖注入机制，你无需通过from xx import xx的形式显示导入，只需要在测试函数的参数中指定同名参数即可，比如：
-
-import pytest
 
 
-@pytest.fixture
-def smtp_connection():
-    import smtplib
-
-    return smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
 
 
-def test_ehlo(smtp_connection):
-    response, msg = smtp_connection.ehlo()
-    assert response == 250
-上述示例中定义了一个测试夹具 smtp_connection，在测试函数 test_ehlo 签名中定义了同名参数，则 pytest 框架会自动注入该变量。
 
 * skip: 跳過這個測試案例
 * skipif: 如果符合某個條件，則跳過這個測試案例
