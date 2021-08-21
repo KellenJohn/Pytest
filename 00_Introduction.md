@@ -278,6 +278,8 @@ pytest中的fixture提供了一個很好的對象管理方式，我們可以將�
 ##### 宣告和使用
 pytest 中的fixture更像是測試資源，你只需定義一個 fixture，就可以在用例中直接使用它。得益于 pytest 的依賴注入機制，你無需 from xx import xx 導入，只需要在測試函數的參數中指定同名參數即可
 
+用法: 他在每一個function重新建立一次
+範例：我們定義了一個 smtp_connection 將他當成參數傳入到 test_ehlo function 內
 ```python
 import pytest
 
@@ -294,10 +296,7 @@ def test_ehlo(smtp_connection):
     assert response == 250
 ```
 
-定義了一個fixture smtp_connection，在測試函數 test_ehlo 定義了同名參數，則 pytest 框架會自動注入該變量。
-
-
-共享
+##### 共享
 同一個fixture可被多個測試文件中的多個測試用例共享。只需在包（Package）中定義 conftest.py 文件，并把fixture的定義寫在文件中，則包内所有模塊（Module）的所有測試用例均可使用 conftest.py 中所定義的fixture。如下文件的 test_1/conftest.py 定義了fixture，那 test_a.py 和 test_b.py 可以使用該fixture；而 test_c.py 則無 法使用。
 
 ```python
