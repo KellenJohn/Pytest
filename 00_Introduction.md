@@ -4,7 +4,6 @@
 * [Wendy](https://hackmd.io/@esun-mlops/HkTZCsJOu)
 未消化
 * https://zhuanlan.zhihu.com/p/84138685
-* https://www.gushiciku.cn/pl/gCot/zh-tw
 * https://www.cnblogs.com/bainianminguo/p/13773717.html
 * https://note.qidong.name/2019/01/pytest-httpserver/
 * https://note.qidong.name/2018/02/pytest-mock/
