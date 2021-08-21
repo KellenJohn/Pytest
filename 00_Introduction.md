@@ -154,6 +154,17 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 --fixtures: 列出所有 fixtures
 ```
 
+`pytest` 也支持執行指定：
+
+指定測試文件路徑
+`pytest /path/to/test/file.py`
+指定測試類
+`pytest /path/to/test/file.py:TestCase`
+指定測試方法
+`pytest another.test::TestClass::test_method`
+指定測試函數
+`pytest /path/to/test/file.py:test_function`
+
 
 #### 基本 Configuration files (3)：.coveragerc 設定檔
 有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：
@@ -185,6 +196,11 @@ def test_index_error():
     some_list = []
     with pytest.raises(IndexError):
         print(some_list[1])
+        
+def test_type_error():
+    x = "hello"
+    with pytest.raises(TypeError):
+        x + []
 ```
 https://blog.csdn.net/weixin_38374974/article/details/107245534
 raises： 在断言一些代码块或者函数时会引发意料之中的异常或者其他失败的异常，导致程序无法运行时，使用 raises 捕获匹配到的异常，可以继续让代码正常运行。
@@ -267,6 +283,28 @@ def test_add(x, y, expected_sum):
     assert x + y == expected_sum
 ```
 #### 內建 fixture
+
+测试夹具（Fixtures）
+pytest 的测试夹具和 unittest、nose、nose2的风格迥异，它不但能实现 setUp 和 tearDown这种测试前置和清理逻辑，还其他非常多强大的功能。
+
+4.1 声明和使用
+pytest 中的测试夹具更像是测试资源，你只需定义一个夹具，然后就可以在用例中直接使用它。得益于 pytest 的依赖注入机制，你无需通过from xx import xx的形式显示导入，只需要在测试函数的参数中指定同名参数即可，比如：
+
+import pytest
+
+
+@pytest.fixture
+def smtp_connection():
+    import smtplib
+
+    return smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
+
+
+def test_ehlo(smtp_connection):
+    response, msg = smtp_connection.ehlo()
+    assert response == 250
+上述示例中定义了一个测试夹具 smtp_connection，在测试函数 test_ehlo 签名中定义了同名参数，则 pytest 框架会自动注入该变量。
+
 * skip: 跳過這個測試案例
 * skipif: 如果符合某個條件，則跳過這個測試案例
 * xfail: 預期會失敗 （其實前一篇想跳過會失敗的案例應該要用 xfail，而不是 skip）
