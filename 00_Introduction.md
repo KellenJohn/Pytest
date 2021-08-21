@@ -477,8 +477,61 @@ PASSED
 
 ```
 
+##### fixture setup / teardown
+setup，fixture可以定義autouse來實現初始化。
+
+```python
+@pytest.fixture(autouse=True)
+```
+
+autouse的fixture不需要調用，會自己運行，和test放到相同scope，就能實現setup的效果。
+
+**autouse使用說明**
+
+* autouse遵循scope的規則，scope=”session”整個會話只會運行1次，其他同理
+* autouse定義在module中，module中的所有function都會用它（如果scope=”module”，只運行1次，如果scope=”function”，會運行多次）
+* autouse定義在conftest.py，conftest覆蓋的test都會用它
+* autouse定義在plugin中，安裝plugin的test都會用它
+* 在使用autouse時需要同時注意scope和定義位置
+示例，transact默認scope是function，會在每個test函數執行前自動運行
 
 
+**teardown**，可以在fixture中使用yield關鍵字來實現清理。
+
+示例，scope為module，在module結束時，會執行yield後面的print()和smtp_connection.close()
+
+# content of conftest.py
+
+```python
+import smtplib
+import pytest
+
+
+@pytest.fixture(scope="module")
+def smtp_connection():
+    smtp_connection = smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
+    yield smtp_connection  # provide the fixture value
+    print("teardown smtp")
+    smtp_connection.close()
+```
+
+可以使用`with`關鍵字進一步簡化，with會自動清理上下文，執行smtp_connection.close()
+
+# content of test_yield2.py
+```python
+import smtplib
+import pytest
+
+
+@pytest.fixture(scope="module")
+def smtp_connection():
+    with smtplib.SMTP("smtp.gmail.com", 587, timeout=5) as smtp_connection:
+        yield smtp_connection  # provide the fixture value
+```
+
+
+
+# content of test_db_transact.py
 
 * skip: 跳過這個測試案例
 * skipif: 如果符合某個條件，則跳過這個測試案例
