@@ -279,8 +279,8 @@ def test_ehlo(smtp_connection):
 
 ```python
 └── test_1
-│    ├──  conftest.py
-│    ├──  test_a.py
+│    ├── conftest.py
+│    ├── test_a.py
 │    └── test_b.py
 └── test_2
      └── test_c.py
@@ -541,9 +541,6 @@ def test_division(example_input, expectation):
         assert (6 / example_input) is not None
 ```
 
-https://zhuanlan.zhihu.com/p/84138685
-
-
 ##### fixture setup / teardown
 setup，fixture可以定義autouse來實現初始化。
 
@@ -563,9 +560,11 @@ autouse的fixture不需要調用，會自己運行，和 test 放到相同 scope
 示例，transact 默認 scope 是 function，會在每個 test 函數執行前自動運行
 
 
-**teardown**，可以在fixture中使用yield關鍵字來實現清理。
+##### 測試前置和清理
+**setUp / tearDown**，可以在fixture中使用yield關鍵字來實現清理。
 
-示例，scope為module，在module結束時，會執行yield後面的print()和smtp_connection.close()
+pytest 的測試 fixture 也能實現測試前置和清理，通過 yield 語句來拆分這兩個邏輯</br>
+scope 為 module，在 module 結束時，會執行 yield 後面的 print() 和 smtp_connection.close()</br>
 
 📓 Example - content of conftest.py
 ```python
@@ -581,7 +580,7 @@ def smtp_connection():
     smtp_connection.close()
 ```
 
-可以使用`with`關鍵字進一步簡化，with會自動清理上下文，執行smtp_connection.close()
+📝 可以使用`with`關鍵字進一步簡化，with會自動清理上下文，執行smtp_connection.close()
 
 📓 Example - content of test_yield2.py
 ```python
@@ -595,6 +594,8 @@ def smtp_connection():
         yield smtp_connection  # provide the fixture value
 ```
 
+
+##### 其他判斷
 * skip: 跳過這個測試案例
 * skipif: 如果符合某個條件，則跳過這個測試案例
 * xfail: 預期會失敗 （其實前一篇想跳過會失敗的案例應該要用 xfail，而不是 skip）
@@ -631,9 +632,7 @@ test_fixture.py::test_eval[3+5-8] PASSED
 test_fixture.py::test_eval[2+4-6] PASSED
 test_fixture.py::test_eval[6*9-42] XFAIL
 =============================== 2 passed, 1 xfailed in 0.05s ================================
-
 ```
-
 
 
 #### Custom Mark
