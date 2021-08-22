@@ -1,19 +1,22 @@
 ## Pytest
-* [Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
-* [★Python Table Manners - 測試 (二)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/9fb680151c5e4bf38ab35eebd0a35c4b)
+
+優質
+* [Python Table Manners - 測試 (二)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/9fb680151c5e4bf38ab35eebd0a35c4b)
 * [Wendy](https://hackmd.io/@esun-mlops/HkTZCsJOu)
-未消化
+* [封神之路](https://codingnote.cc/zh-tw/p/207951/)
+* [IT人](https://iter01.com/596979.html)
+* [Pytest Guide](https://mmx362003.gitbooks.io/pytest-guide/content/chapter1/14-pytest-fixture-param-and-parametrize.html)
+* [聊聊 Python 的单元测试框架（三）：最火的 pytest](https://zhuanlan.zhihu.com/p/84138685)
+
+一般
 * https://zhuanlan.zhihu.com/p/84138685
 * https://www.cnblogs.com/bainianminguo/p/13773717.html
 * https://note.qidong.name/2019/01/pytest-httpserver/
 * https://note.qidong.name/2018/02/pytest-mock/
-★封神之路
-* https://codingnote.cc/zh-tw/p/207951/
+* [Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
 
-★IT人
-https://iter01.com/596979.html
 ★dict
-https://mmx362003.gitbooks.io/pytest-guide/content/chapter1/14-pytest-fixture-param-and-parametrize.html
+
 
 單元測試
 pytest 結合 Allure2 產生精美的測試報表
@@ -79,6 +82,7 @@ https://ppfocus.com/mo/0/diaa73ff9.html
 pytest.ini
 擺放至 job 底下，在這的資料夾名稱使用如下
 另外，terminal 下 pytest 因為 test_main.py 放在 tests 所以要加 pytest tests/test_main.py
+📓 Example
 ```sh
 [pytest]
 addopts = -v -s
@@ -168,7 +172,7 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 #### 基本 Configuration files (3)：.coveragerc 設定檔
 有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：
 計算 coverage 的額外設定檔，可以設定計算時忽略的檔案以及不需測試的程式碼列表，可以放於根目錄或測試程式目錄並於 pytest.ini 指定位置
-
+📓 Example
 ```python
 [run]
 omit = 
@@ -187,6 +191,7 @@ exclude_lines =
 ---
 ### 測試例外事件
 透過 pytest.raise 確認測試案例是否有符合預期的丟出例外事件
+📓 Example
 ```python
 import pytest
 
@@ -204,7 +209,7 @@ def test_type_error():
 https://blog.csdn.net/weixin_38374974/article/details/107245534
 raises： 在断言一些代碼塊或者函數时會引發意料之中的異常或者其他失敗的異常，導致程序无法運行时，使用 raises 捕获匹配到的異常，可以繼續讓代碼正常運行。
 
-預期内異常
+📓 Example - 預期内異常
 ```python
 import pytest
 
@@ -231,34 +236,7 @@ def test_raises():
 ```
 
 
-參數化 pytest.mark.parametrize
-使用參數化的话，可能會存在一部分用例可能會抛出異常，一部分可能會没有異常導致失敗。如果想要其正常執行，則需要一個上下文管理器。官方指導使用 `does_not_raise`
 
-範例
-```python
-from contextlib import contextmanager
-import pytest
-
-@contextmanager
-def does_not_raise():
-    yield
-
-@pytest.mark.parametrize(
-    "example_input,expectation",
-    [
-        (3, does_not_raise()),
-        (2, does_not_raise()),
-        (1, does_not_raise()),
-        (0, pytest.raises(ZeroDivisionError)),
-    ],
-)
-def test_division(example_input, expectation):
-    """Test how much I know division."""
-    with expectation:
-        assert (6 / example_input) is not None
-```
-
-https://zhuanlan.zhihu.com/p/84138685
 
 
 #### 內建 fixture
@@ -267,7 +245,7 @@ pytest中，一個fixture其實就是一個函數，函數名就是fixture的名
 
 收集該test方法的作用域內的所有fixture； 這個作用域包括該test case所屬的class，module等不同作用域的疊加（遇到同名的fixture，更里層的會覆蓋更外層的）：</br>
 
-> The discovery of fixtures functions starts at test classes, then test modules, then conftest.py files and finally builtin and third party plugins.
+> *The discovery of fixtures functions starts at test classes, then test modules, then conftest.py files and finally builtin and third party plugins.*
 
 收集該test方法的pytest參數（通過pytest.mark.parametrize來定義）；</br>
 
@@ -301,17 +279,18 @@ def test_ehlo(smtp_connection):
 
 ```python
 └── test_1
-    ├──  conftest.py
-    ├──  test_a.py
-    └── test_b.py
+│    ├──  conftest.py
+│    ├──  test_a.py
+│    └── test_b.py
 └── test_2
-    └── test_c.py
+     └── test_c.py
 ```
 
 ##### fixture params
 @pytest.fixture 定義在fixture 內 透過params去定義
 params 可以傳入object or string value
 
+📓 Example
 ```python
 @pytest.fixture(scope="function", params=["opt1", "opt2"])
 def optmod(request):
@@ -341,7 +320,7 @@ fixture的順序優先按scope從大到小，session > package > module > class 
 `autouse`的fixture會優先於相同scope的其他fixture(預設執行) </br>
 
 
-觀察 object ID
+📓 Example - 觀察 object ID
 ```python
 import pytest
 
@@ -396,7 +375,7 @@ FAILED test_fixture.py::test_db_b - assert 1 == 2
 ===================================== 2 failed in 0.04s =====================================
 
 ```
-
+📓 Example
 ```python
 import pytest
 
@@ -451,12 +430,12 @@ def test_order(f1, m1, f2, s1):
 
 ### marker
 
-#### 參數化 (parameterize)
+#### 參數化 (parameterize) - pytest.mark.parametrize
 在測試資料比較簡單的時候，可以使用 parameterize 來減少撰寫重複的程式碼</br>
 **@pytest.mark.parametrize(args1, arg2)**
 * 第一個參數: 指定測試函式要使用的參數名稱
 * 第二個參數: 測試資料的陣列
-@pytest.mark.parametrize 直接定義在 test method 上面</br>
+@pytest.mark.parametrize 直接定義在 test method 上面 </br>
 這樣的好處是可以針對這個 method 去跑特定的參數，透過定義 @pytest.mark.parametrize 傳入ARRAY</br>
 
 📓Example
@@ -496,6 +475,24 @@ FAILED test_fixture.py::test_eval[6*9-42] - assert 54 == 42
 ```
 註：未捕捉 AssertionError
 
+📓 Example
+```python
+import pytest
+
+
+@pytest.mark.parametrize(
+    "x, y, expected_sum",
+    (
+        (1, 1, 2),
+        (2, 2, 4),
+        (3, 3, 6),
+    ),
+)
+def test_add(x, y, expected_sum):
+    assert x + y == expected_sum
+```
+
+📓 Example
 ```python
 import pytest
 
@@ -517,25 +514,34 @@ test_fixture.py::test_b[cui3-14] testb----->cui3----->14
 PASSED
 
 ```
-Example
+
+* 使用參數化的话，可能會存在一部分用例可能會抛出異常，一部分可能會没有異常導致失敗。如果想要其正常執行，則需要一個上下文管理器。官方指導使用 `does_not_raise`</br>
+
+📓 Example
 ```python
-@pytest.mark.parametrize(args1, arg2)
-第一個參數: 指定測試函式要使用的參數名稱
-第二個參數: 測試資料的陣列
+from contextlib import contextmanager
 import pytest
 
+@contextmanager
+def does_not_raise():
+    yield
 
 @pytest.mark.parametrize(
-    "x, y, expected_sum",
-    (
-        (1, 1, 2),
-        (2, 2, 4),
-        (3, 3, 6),
-    ),
+    "example_input,expectation",
+    [
+        (3, does_not_raise()),
+        (2, does_not_raise()),
+        (1, does_not_raise()),
+        (0, pytest.raises(ZeroDivisionError)),
+    ],
 )
-def test_add(x, y, expected_sum):
-    assert x + y == expected_sum
+def test_division(example_input, expectation):
+    """Test how much I know division."""
+    with expectation:
+        assert (6 / example_input) is not None
 ```
+
+https://zhuanlan.zhihu.com/p/84138685
 
 
 ##### fixture setup / teardown
@@ -545,7 +551,7 @@ setup，fixture可以定義autouse來實現初始化。
 @pytest.fixture(autouse=True)
 ```
 
-autouse的fixture不需要調用，會自己運行，和test放到相同scope，就能實現setup的效果。
+autouse的fixture不需要調用，會自己運行，和 test 放到相同 scope，就能實現 setup 的效果。
 
 **autouse使用說明**
 
@@ -554,15 +560,14 @@ autouse的fixture不需要調用，會自己運行，和test放到相同scope，
 * autouse定義在conftest.py，conftest覆蓋的test都會用它
 * autouse定義在plugin中，安裝plugin的test都會用它
 * 在使用autouse時需要同時注意scope和定義位置
-示例，transact默認scope是function，會在每個test函數執行前自動運行
+示例，transact 默認 scope 是 function，會在每個 test 函數執行前自動運行
 
 
 **teardown**，可以在fixture中使用yield關鍵字來實現清理。
 
 示例，scope為module，在module結束時，會執行yield後面的print()和smtp_connection.close()
 
-# content of conftest.py
-
+📓 Example - content of conftest.py
 ```python
 import smtplib
 import pytest
@@ -578,7 +583,7 @@ def smtp_connection():
 
 可以使用`with`關鍵字進一步簡化，with會自動清理上下文，執行smtp_connection.close()
 
-# content of test_yield2.py
+📓 Example - content of test_yield2.py
 ```python
 import smtplib
 import pytest
@@ -590,14 +595,11 @@ def smtp_connection():
         yield smtp_connection  # provide the fixture value
 ```
 
-
-
-# content of test_db_transact.py
-
 * skip: 跳過這個測試案例
 * skipif: 如果符合某個條件，則跳過這個測試案例
 * xfail: 預期會失敗 （其實前一篇想跳過會失敗的案例應該要用 xfail，而不是 skip）
 
+📓 Example
 ```python
 @pytest.mark.skip(reason="no way of currently testing this")
 def test_mark_skip():
@@ -615,7 +617,7 @@ def test_mark_skip_if():
 def test_mark_xfail():
     ...
 ```
-
+📓 Example
 ```python
 @pytest.mark.parametrize(
     "test_input,expected",
@@ -637,7 +639,7 @@ test_fixture.py::test_eval[6*9-42] XFAIL
 #### Custom Mark
 pytest 還支援將不同的測試標上不同的標籤，讓你可以利用標籤將測試分組，使你可只執行某個標籤相關的所有測試就好。
 
-test_mark.py
+📓 Example - test_mark.py
 ```python
 # -*- coding: utf-8 -*-
 import pytest
