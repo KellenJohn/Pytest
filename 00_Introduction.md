@@ -452,29 +452,14 @@ def test_order(f1, m1, f2, s1):
 ### marker
 
 #### 參數化 (parameterize)
-在測試資料比較簡單的時候，可以使用 parameterize 來減少撰寫重複的程式碼
-```python
-@pytest.mark.parametrize(args1, arg2)
-第一個參數: 指定測試函式要使用的參數名稱
-第二個參數: 測試資料的陣列
-import pytest
+在測試資料比較簡單的時候，可以使用 parameterize 來減少撰寫重複的程式碼</br>
+**@pytest.mark.parametrize(args1, arg2)**
+* 第一個參數: 指定測試函式要使用的參數名稱
+* 第二個參數: 測試資料的陣列
+@pytest.mark.parametrize 直接定義在 test method 上面</br>
+這樣的好處是可以針對這個 method 去跑特定的參數，透過定義 @pytest.mark.parametrize 傳入ARRAY</br>
 
-
-@pytest.mark.parametrize(
-    "x, y, expected_sum",
-    (
-        (1, 1, 2),
-        (2, 2, 4),
-        (3, 3, 6),
-    ),
-)
-def test_add(x, y, expected_sum):
-    assert x + y == expected_sum
-```
-
-@pytest.mark.parametrize 直接定義在test method上面
-這樣的好處是可以針對這個method 去跑特定的參數，透過定義@pytest.mark.parametrize 傳入ARRAY
-
+📓Example
 ```python
 import pytest
 @pytest.mark.parametrize("test_input,expected", [
@@ -482,7 +467,6 @@ import pytest
     ("2+4", 6),
     ("6*9", 42),
 ])
-
 def test_eval(test_input, expected):
     assert eval(test_input) == expected
     
@@ -510,6 +494,7 @@ test_fixture.py:8: AssertionError
 ================================== short test summary info ==================================
 FAILED test_fixture.py::test_eval[6*9-42] - assert 54 == 42
 ```
+註：未捕捉 AssertionError
 
 ```python
 import pytest
@@ -532,6 +517,26 @@ test_fixture.py::test_b[cui3-14] testb----->cui3----->14
 PASSED
 
 ```
+Example
+```python
+@pytest.mark.parametrize(args1, arg2)
+第一個參數: 指定測試函式要使用的參數名稱
+第二個參數: 測試資料的陣列
+import pytest
+
+
+@pytest.mark.parametrize(
+    "x, y, expected_sum",
+    (
+        (1, 1, 2),
+        (2, 2, 4),
+        (3, 3, 6),
+    ),
+)
+def test_add(x, y, expected_sum):
+    assert x + y == expected_sum
+```
+
 
 ##### fixture setup / teardown
 setup，fixture可以定義autouse來實現初始化。
