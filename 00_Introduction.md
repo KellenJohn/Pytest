@@ -17,7 +17,9 @@
 * [Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
 
 https://zhuanlan.zhihu.com/p/184935243
-
+消化中
+* [Pytest + Excel](https://zhuanlan.zhihu.com/p/36774072)
+* 
 
 單元測試
 pytest 結合 Allure2 產生精美的測試報表
