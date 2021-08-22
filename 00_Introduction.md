@@ -2,11 +2,12 @@
 
 優質
 * [Python Table Manners - 測試 (二)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/9fb680151c5e4bf38ab35eebd0a35c4b)
+* [聊聊 Python 的单元测试框架（三）：最火的 pytest](https://zhuanlan.zhihu.com/p/84138685)
 * [Wendy](https://hackmd.io/@esun-mlops/HkTZCsJOu)
 * [封神之路](https://codingnote.cc/zh-tw/p/207951/)
 * [IT人](https://iter01.com/596979.html)
 * [Pytest Guide](https://mmx362003.gitbooks.io/pytest-guide/content/chapter1/14-pytest-fixture-param-and-parametrize.html)
-* [聊聊 Python 的单元测试框架（三）：最火的 pytest](https://zhuanlan.zhihu.com/p/84138685)
+
 
 一般
 * https://zhuanlan.zhihu.com/p/84138685
@@ -15,7 +16,7 @@
 * https://note.qidong.name/2018/02/pytest-mock/
 * [Python Table Manners - 測試 (一)](https://zh-tw.coderbridge.com/series/66cb226274ea4d349abd49d2aef44037/posts/b00ffb74e7534d018a84b98cad4a7498)
 
-★dict
+https://zhuanlan.zhihu.com/p/184935243
 
 
 單元測試
@@ -305,6 +306,72 @@ PASSED
 PASSED
 
 ```
+
+##### @pytest.mark.usefixtures()
+* 使用裝飾器 `@pytest.mark.usefixtures()` 修飾需要運行的用例
+* 疊加 usefixtures
+  * 如果一個方法或者一個 class 用例想要同時調用多個 fixture，可使用 @pytest.mark.usefixture() 疊叠加
+  * 注意叠加顺序，先执行的放底层，后执行的放上层
+
+📓 Example
+```python
+import pytest 
+
+@pytest.fixture()
+def test1():
+    print('\n开始執行function1')
+ 
+ 
+@pytest.fixture()
+def test2():
+    print('\n开始執行function2')
+ 
+ 
+@pytest.mark.usefixtures('test1')
+@pytest.mark.usefixtures('test2')
+def test_a():
+    print('---用例a執行---')
+ 
+ 
+@pytest.mark.usefixtures('test2')
+@pytest.mark.usefixtures('test1')
+class TestCase:
+ 
+    def test_b(self):
+        print('---用例b執行---')
+ 
+    def test_c(self):
+        print('---用例c執行---')
+ 
+ 
+if __name__ == '__main__':
+    pytest.main(['-s', '-v', 'test_fixture.py'])
+       
+# --------------------------------------------------------    
+test_fixture.py::test_a 
+开始执行function2
+
+开始执行function1
+---用例a执行---
+PASSED
+test_fixture.py::TestCase::test_b 
+开始执行function1
+
+开始执行function2
+---用例b执行---
+PASSED
+test_fixture.py::TestCase::test_c 
+开始执行function1
+
+开始执行function2
+---用例c执行---
+PASSED
+
+===================================== 3 passed in 0.04s =====================================    
+```
+
+
+
 
 ##### scope
 fixture 的 scope 共分為五種 （function, class, module, package, session）</br>
@@ -618,7 +685,8 @@ def test_mark_skip_if():
 def test_mark_xfail():
     ...
 ```
-📓 Example
+📓 Example - 
+若將參數換成 `pytest.param`，如知道最後一組參數是失敗，將它標記為 `xfail`
 ```python
 @pytest.mark.parametrize(
     "test_input,expected",
