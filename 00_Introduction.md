@@ -44,8 +44,6 @@ https://ppfocus.com/mo/0/diaa73ff9.html
   ├── README.md
   ├── api
   │   ├── api.py
-  │   ├── driver.log
-  │   ├── my_log.py
   │   ├── testDB.db
   │   ├── testDB.sql
   │   └── utils.py
@@ -53,18 +51,9 @@ https://ppfocus.com/mo/0/diaa73ff9.html
   │   ├── conftest.py
   │   ├── test_api.py
   │   └── test_utils.py
-  ├── functions
-  │   └── basic.py
   ├── functions_tests
   │   ├── conftest.py
   │   └── test_basic.py
-  ├── myclass
-  │   ├── Person.py
-  │   ├── __init__.py
-  ├── myclass_test
-  │   ├── __init__.py
-  │   ├── conftest.py
-  │   └── test_myclass.py
   ├── pytest.ini
   ├── .coveragerc
   └── requirements.txt
@@ -75,16 +64,12 @@ https://ppfocus.com/mo/0/diaa73ff9.html
 * pytest 可使用的配置檔眾多，pytest.ini 文件會優先於其他文件，即使是空的。
 
 #### pytest-cov 測試覆蓋率
-> * --cov=[SOURCE]: 測試包含的程式碼範圍(如果我們想指定執行專案裡面的某個模)
->                   也可以指定具體的py模組名稱 pytest --cov=src.pay 但不能寫成pytest --cov=src/pay.py
+> * --cov=[SOURCE]: 測試包含的程式碼範圍(如果我們想指定執行專案裡面的某個 Module)
+>                   也可以指定具體的 .py Module 名稱 pytest --cov=src.pay 但不能寫成 pytest --cov=src/pay.py
 > * --cov-report=TYPE: 測試覆蓋率報告的種類 (term, term-missing, annotate, html, xml)
 > * --cov-fail-under=MIN: 如果覆蓋率小於 MIN 則跳出
-其中 --cov, --cov-report 都可以加入多個參數
+其中 --cov, --cov-report 都可以加入多個參數 </br>
 
-
-##### pytest.ini
-擺放至 job 底下，在這的資料夾名稱使用如下
-另外，terminal 下 pytest 因為 test_main.py 放在 tests 所以要加 pytest tests/test_main.py </br>
 
 📓 Example
 ```sh
@@ -107,10 +92,15 @@ markers =
     bauu:
 ```
 
+##### pytest.ini
+擺放至 job 底下，在這的資料夾名稱使用如下
+另外，terminal 下 pytest 因為 test_main.py 放在 tests 所以要加 pytest tests/test_main.py </br>
+
+
 ##### pytest.ini 中的.coveragerc 設定檔
+計算 coverage 的額外設定檔，可以設定計算時忽略的檔案以及不需測試的程式碼列表，可以放於根目錄或測試程式目錄並於 pytest.ini 指定位置 </br>
 有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：</br>
 
-計算 coverage 的額外設定檔，可以設定計算時忽略的檔案以及不需測試的程式碼列表，可以放於根目錄或測試程式目錄並於 pytest.ini 指定位置 </br>
 
 📓 Example
 ```python
