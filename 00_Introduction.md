@@ -82,9 +82,10 @@ https://ppfocus.com/mo/0/diaa73ff9.html
 其中 --cov, --cov-report 都可以加入多個參數
 
 
-pytest.ini
+##### pytest.ini
 擺放至 job 底下，在這的資料夾名稱使用如下
-另外，terminal 下 pytest 因為 test_main.py 放在 tests 所以要加 pytest tests/test_main.py
+另外，terminal 下 pytest 因為 test_main.py 放在 tests 所以要加 pytest tests/test_main.py </br>
+
 📓 Example
 ```sh
 [pytest]
@@ -106,8 +107,29 @@ markers =
     bauu:
 ```
 
+##### pytest.ini 中的.coveragerc 設定檔
+有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：</br>
 
-例如
+計算 coverage 的額外設定檔，可以設定計算時忽略的檔案以及不需測試的程式碼列表，可以放於根目錄或測試程式目錄並於 pytest.ini 指定位置 </br>
+
+📓 Example
+```python
+[run]
+omit = 
+    # omit all files in this directory
+    api/*
+    */__init__.py
+    # omit this single file
+    src/tirefire.py
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:
+    except ImportError:
+    pass    
+```
+
+📓 Example
 ```sh
 pipenv run pytest --cov=report_generator --cov-report=term-missing test/
 ```
@@ -121,6 +143,14 @@ pipenv run pytest --cov=report_generator --cov-report=term-missing test/
 ```sh
 pipenv run pytest --cov=report_generator --cov-report=term-missing --cov-report=html
 ```
+
+pytest-html: 產生html格式的測試報告
+在執行pytest的時候加入，會在指定目錄下產出名稱為report.html的測試報告
+
+pytest --html=report.html --self-contained-html
+註: 如果不下--self-contained-html，產出的html檔會需要搭配一些靜態檔案才能正常閱讀，如果要分享檔案會不方便
+
+
 
 #### 基本 Configuration files (2)：conftest.py
 * pytest在執行任何一個單元測試的時候，最靠近執行目錄下的那個conftest.py將被自動執行。
@@ -171,26 +201,6 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 指定測試函數
 `pytest /path/to/test/file.py:test_function`
 
-
-#### 基本 Configuration files (3)：.coveragerc 設定檔
-有時候有些程式其實不需要衡量覆蓋率，譬如 __init__.py 一般都會是空的，如果我們希望將它在報告中排除，就可以用 .coveragerc 設定檔進行排除，以下是 .coveragerc 的範例：
-計算 coverage 的額外設定檔，可以設定計算時忽略的檔案以及不需測試的程式碼列表，可以放於根目錄或測試程式目錄並於 pytest.ini 指定位置
-📓 Example
-```python
-[run]
-omit = 
-    # omit all files in this directory
-    api/*
-    */__init__.py
-    # omit this single file
-    src/tirefire.py
-
-[report]
-exclude_lines =
-    if __name__ == .__main__.:
-    except ImportError:
-    pass    
-```
 ---
 ### 測試例外事件
 透過 pytest.raise 確認測試案例是否有符合預期的丟出例外事件
