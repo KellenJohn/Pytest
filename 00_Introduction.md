@@ -193,7 +193,8 @@ fixture 的 scope 共分為五種 （function, class, module, package, session�
 
 ---
 ### 測試例外事件
-透過 pytest.raise 確認測試案例是否有符合預期的丟出例外事件
+透過 pytest.raise 確認測試案例是否有符合預期的丟出例外事件 </br>
+
 📓 Example
 ```python
 import pytest
@@ -210,7 +211,7 @@ def test_type_error():
         x + []
 ```
 https://blog.csdn.net/weixin_38374974/article/details/107245534
-raises： 在断言一些代碼塊或者函數时會引發意料之中的異常或者其他失敗的異常，導致程序无法運行时，使用 raises 捕获匹配到的異常，可以繼續讓代碼正常運行。
+raises： 在断言一些代碼塊或者函數时會引發意料之中的異常或者其他失敗的異常，導致程序无法運行时，使用 raises 捕获匹配到的異常，可以繼續讓代碼正常運行。</br>
 
 📓 Example - 預期内異常
 ```python
