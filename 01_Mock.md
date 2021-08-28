@@ -10,6 +10,45 @@
 * https://ajing-notebook.blogspot.com/2020/01/python-patch.html
 
 
+### Mock module
+在Python 3.3 以前的版本中，需要另外安裝 mock 模組，可以使用 pip 命令來安裝：
+```sh
+$ pip install mock
+```
+然後在程式碼中就可以直接import進來：
+```python
+import mock
+```
+
+從Python 3.3開始，mock 模組已經被合併到標準庫中，被命名為 unittest.mock，可以直接 import 進來使用：
+```python
+from unittest import mock
+```
+
+#### 基本用法
+Mock物件是mock模組中最重要的概念。Mock物件就是mock模組中的一個類的例項，這個類的例項可以用來替換其他的Python物件，來達到模擬的效果。Mock類的定義如下：</br>
+📝 memo
+```python
+class Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, **kwargs)
+```
+
+這裡給出這個定義只是要說明下Mock物件其實就是個Python類而已，當然，它內部的實現是很巧妙的，有興趣的可以去看mock模組的程式碼。</br>
+
+mock主要有name，return_value,side_effect,和spec四個函式。</br>
+
+四個主要的assert方法：</br>
+* assert_called_with  是否呼叫了這個函式</br>
+* assert_called_once_with  是否只調用了一次這個函式</br>
+* assert_any_calls  是否呼叫了這個函式，前兩個函式只能判斷離它們最近的一次呼叫，這個是全域性的。</br>
+
+
+Mock物件的一般用法是這樣的：</br>
+找到你要替換的物件，這個物件可以是一個類，或者是一個函式，或者是一個類例項。</br>
+然後例項化Mock類得到一個mock物件，並且設定這個mock物件的行為，比如被呼叫的時候返回什麼值，被訪問成員的時候返回什麼值等。</br>
+使用這個mock物件替換掉我們想替換的物件，也就是步驟1中確定的物件。</br>
+之後就可以開始寫測試程式碼，這個時候我們可以保證我們替換掉的物件在測試用例執行的過程中行為和我們預設的一樣。</br>
+
+---
 pytest-mock
 pytest-mock是一個pytest的插件，安裝即可使用。 它提供了一個名為mocker的fixture，僅在當前測試function或method生效，而不用自行包裝。
 
