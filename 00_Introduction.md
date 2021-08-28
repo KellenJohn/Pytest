@@ -149,10 +149,6 @@ pytest --html=report.html --self-contained-html
 
 以下面的結構為例，<font color=#800000> `test_sponsor.py`</font> 就會自動載入上層的 conftest.py 中的 fixture
 
-fixture 的 scope 共分為五種 （function, class, module, package, session）
-表示 fixture 會在哪個階段前準備資源，並在哪個階段後清除
-如果設定成 function，就會在每一個測試函式執行前和後做資源的處理
-
 ```python
 └── tests
     ├── __init__.py
