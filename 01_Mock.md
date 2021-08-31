@@ -55,7 +55,7 @@ pytest-mock是一個pytest的插件，安裝即可使用。 它提供了一個�
 
 object
 mock一個object，是最常見的需求。 由於function也是一個object，以下以function舉例。
-
+📓 Example
 ```python
 import os 
 def rm(filename): 
@@ -76,7 +76,7 @@ def rm(filename):
 method
 有時，僅僅需要mock一個object里的method，而無需mock整個object。 例如，在對當前object的某個method進行測試時。 這時，可以用patch.object。
 
-
+📓 Example
 ```python
 class ForTest: 
   field = 'origin' 
@@ -105,7 +105,7 @@ pip install pytest-mock
 
 這裡的mock和unittest的mock基本上都是一樣的，唯一的區別在於pytest.mock需要導入需要mock對象的詳細路徑。
 
-### weateher_r.py
+📓 Example weateher_r.py
 ```python
 class Mock_weather():
   def weather(self):
@@ -128,8 +128,7 @@ class Mock_weather():
 ```
 先將需要模擬的天氣接口，以及需要模擬的場景的代碼寫好，然後在進行遵循pytest的用例規範進行書寫關於mock的測試用例。
 
-### test_01.py
-
+📓 Example - test_01.py
 ```python
 import pytest
 from test_01.weather_r import Mock_weather
@@ -165,14 +164,13 @@ if __name__ == '__main__':
 原文網址：https://kknews.cc/code/oq6nbb6.html
 
 
-
+### mock, unittest mock, pytest.mock
 #### mock
-其中，get_product_status_by_id 方法還沒有實現；buy_product 方法依賴於 get_product_status_by_id 方法的返回值</br>
 
-📓 product_impl.py
 假設 Product 類中有 2 個方法</br>
-* get_product_status_by_id
-* buy_product
+* get_product_status_by_id - 方法還沒有實現
+* buy_product - 方法依賴於 get_product_status_by_id 方法的返回值
+📓 Example - product_impl.py
 ```python
 class Product(object):
 
@@ -202,10 +200,11 @@ class Product(object):
             result = {"status": 1, "msg": "購買失敗，庫存不足！"}
 
         return result
-```        
+```
+
 📝 摘要
 匯入使用 mock 中的 patch 方法 </br>
-作為測試方法的裝飾器，對 get_product_status_by_id 方法進行 Mock，方法引數為 Mock 物件</br>
+作為測試方法的裝飾器，對 `get_product_status_by_id` 方法進行 Mock，方法引數為 Mock 物件</br>
 測試方法中，對該 Mock 物件設定一個返回值</br>
 呼叫並斷言</br>
 
@@ -213,6 +212,7 @@ class Product(object):
 ```python
 from mock import patch
 from mock_.product_impl import Product
+
 
 @patch('mock_.product_impl.Product.get_product_status_by_id')
 def test_succuse(mock_get_product_status_by_id):
@@ -230,7 +230,6 @@ def test_succuse(mock_get_product_status_by_id):
 📓 Example
 ```python
 from mock import patch
-
 from mock_.product_impl import Product
 
 # Mock一個方法
@@ -242,7 +241,6 @@ def test_succuse(mock_get_product_status_by_id):
   product = Product()
   assert product.buy_product(1).get("status") == 0
  ```
-
 
 
 #### unittest mock
