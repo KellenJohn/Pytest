@@ -1,6 +1,6 @@
 消化中
 * [Python Mock的入門學習](https://www.itread01.com/content/1543845662.html)
-* https://www.gushiciku.cn/pl/gWIy/zh-tw
+* [Python 中 Mock 到底該怎麼玩？](https://www.gushiciku.cn/pl/gWIy/zh-tw)
 * http://puremonkey2010.blogspot.com/2017/08/python-mock-python-unit-test.html
 * https://kknews.cc/zh-tw/code/oq6nbb6.html
 * [Pytest 大全](https://www.cnblogs.com/chenxiaomeng/category/1954939.html)
@@ -27,6 +27,7 @@ from unittest import mock
 
 #### 基本用法
 Mock物件是mock模組中最重要的概念。Mock物件就是mock模組中的一個類的例項，這個類的例項可以用來替換其他的Python物件，來達到模擬的效果。Mock類的定義如下：</br>
+
 📝 memo
 ```python
 class Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, **kwargs)
@@ -34,7 +35,7 @@ class Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=N
 
 這裡給出這個定義只是要說明下Mock物件其實就是個Python類而已，當然，它內部的實現是很巧妙的，有興趣的可以去看mock模組的程式碼。</br>
 
-mock主要有name，return_value,side_effect,和spec四個函式。</br>
+mock 主要有 name, return_value, side_effect 和 spec 四個函式。</br>
 
 四個主要的assert方法：</br>
 * assert_called_with  是否呼叫了這個函式</br>
@@ -165,9 +166,13 @@ if __name__ == '__main__':
 
 
 
+#### mock
+其中，get_product_status_by_id 方法還沒有實現；buy_product 方法依賴於 get_product_status_by_id 方法的返回值</br>
 
-其中，get_product_status_by_id 方法還沒有實現；buy_product 方法依賴於 get_product_status_by_id 方法的返回值
-# product_impl.py
+📓 product_impl.py
+假設 Product 類中有 2 個方法</br>
+* get_product_status_by_id
+* buy_product
 ```python
 class Product(object):
 
@@ -198,13 +203,57 @@ class Product(object):
 
         return result
 ```        
-#### unittest mock        
+📝 摘要
+匯入使用 mock 中的 patch 方法 </br>
+作為測試方法的裝飾器，對 get_product_status_by_id 方法進行 Mock，方法引數為 Mock 物件</br>
+測試方法中，對該 Mock 物件設定一個返回值</br>
+呼叫並斷言</br>
+
+📓 Example
+```python
+from mock import patch
+from mock_.product_impl import Product
+
+@patch('mock_.product_impl.Product.get_product_status_by_id')
+def test_succuse(mock_get_product_status_by_id):
+  # Mock方法，指定一個返回值
+  mock_get_product_status_by_id.return_value = {"id": 1, "name": "蘋果", "num": 23}
+  product = Product()
+  assert product.buy_product(1).get("status") == 0
+```
+
+📝 摘要
+需要注意的是，Mock 此方法的時候，必須制定該方法的完整路徑</br>
+使用 @patch.object 同樣能完成 Mock，不同的是，@patch.object 包含 2 個引數</br>
+第一個引數為該方法所在的類；第二個引數為方法名</br>
+
+📓 Example
+```python
+from mock import patch
+
+from mock_.product_impl import Product
+
+# Mock一個方法
+# @patch.object：物件、方法名
+@patch.object(Product, 'get_product_status_by_id')
+def test_succuse(mock_get_product_status_by_id):
+  # Mock方法，指定一個返回值
+  mock_get_product_status_by_id.return_value = {"id": 1, "name": "蘋果", "num": 23}
+  product = Product()
+  assert product.buy_product(1).get("status") == 0
+ ```
+
+
+
+#### unittest mock
+📝 摘要
 * 匯入 unittest 框架中的 mock 檔案
 * 例項化 Product 物件
 * mock.Mock(return_value=*) 方法
 * 對 get_product_status_by_id 方法進行 Mock
 * 呼叫並斷言
 
+📓 Example
 ```python
 import unittest
 from unittest import mock
@@ -228,9 +277,10 @@ if __name__ == "__main__":
     unittest.main()       
 ```
 #### pytest.mock
-相比 unittest，pytest 由於強大的外掛支援，使用者群體可能更大！
-如果專案本身使用的框架是 pytest，則 Mock 更建議使用 pytest-mock 這個外掛
-Mock 步驟如下：
+📝 摘要
+相比 unittest，pytest 由於強大的外掛支援，使用者群體可能更大！</br>
+如果專案本身使用的框架是 pytest，則 Mock 更建議使用 pytest-mock 這個外掛</br>
+Mock 步驟如下：</br>
 * 使用 pytest 編寫測試方法，引數為 mocker
 * 例項化 Product 物件
 * 使用 mocker.patch() 方法對 get_product_status_by_id 方法進行 Mock，並設定返回值
