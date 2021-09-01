@@ -20,7 +20,7 @@ $ pip install mock
 import mock
 ```
 
-從Python 3.3開始，mock 模組已經被合併到標準庫中，被命名為 unittest.mock，可以直接 import 進來使用：
+從 Python 3.3 開始，mock 模組已經被合併到標準庫中，被命名為 unittest.mock，可以直接 import 進來使用：
 ```python
 from unittest import mock
 ```
@@ -43,10 +43,10 @@ mock 主要有 name, return_value, side_effect 和 spec 四個函式。</br>
 * assert_any_calls  是否呼叫了這個函式，前兩個函式只能判斷離它們最近的一次呼叫，這個是全域性的。</br>
 
 
-Mock物件的一般用法是這樣的：</br>
+Mock 物件的一般用法是這樣的：</br>
 找到你要替換的物件，這個物件可以是一個類，或者是一個函式，或者是一個類例項。</br>
-然後例項化Mock類得到一個mock物件，並且設定這個mock物件的行為，比如被呼叫的時候返回什麼值，被訪問成員的時候返回什麼值等。</br>
-使用這個mock物件替換掉我們想替換的物件，也就是步驟1中確定的物件。</br>
+然後例項化 Mock 類得到一個mock物件，並且設定這個 mock 物件的行為，比如被呼叫的時候返回什麼值，被訪問成員的時候返回什麼值等。</br>
+使用這個 mock 物件替換掉我們想替換的物件，也就是步驟1中確定的物件。</br>
 之後就可以開始寫測試程式碼，這個時候我們可以保證我們替換掉的物件在測試用例執行的過程中行為和我們預設的一樣。</br>
 
 ---
