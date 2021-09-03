@@ -35,7 +35,7 @@ class Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=N
 
 這裡給出這個定義只是要說明下 Mock 物件其實就是個 Python 類而已，當然，它內部的實現是很巧妙的，有興趣的可以去看 mock 模組的程式碼。</br>
 
-mock 主要有 name, return_value, side_effect 和 spec 四個函式。</br>
+mock 主要有 `name`, `return_value`, `side_effect` 和 `spec` 四個函式。</br>
 
 主要的 assert 方法：</br>
 * assert_called_with  是否呼叫了這個函式</br>
