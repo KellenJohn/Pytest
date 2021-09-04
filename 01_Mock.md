@@ -155,9 +155,9 @@ mock_open(mock=None, read_data='')
 content
 ```
 
-* mock object 被呼叫時會傳回 file-like 的 mock object。
-* 之後呼叫 file-like 的 read() 固定會傳回 read_data 參數傳入的內容。
-* mock_open() 也支援 context manager 的用法。
+1.mock object 被呼叫時會傳回 file-like 的 mock object。
+2.之後呼叫 file-like 的 read() 固定會傳回 read_data 參數傳入的內容。
+3.mock_open() 也支援 context manager 的用法。
 
 #### 2.unittest mock
 📝 摘要
