@@ -293,15 +293,15 @@ class ForTest:
   def method(): 
     pass 
   
-  def test_for_test(mocker): 
-    test = ForTest() 
-    mock_method = mocker.patch.object(test, 'method') 
-    test.method() 
-    assert mock_method.called
+def test_for_test(mocker): 
+  test = ForTest() 
+  mock_method = mocker.patch.object(test, 'method') 
+  test.method() 
+  assert mock_method.called
     
-    assert 'origin' == test.field
-    mocker.patch.object(test, 'field', 'mocked')
-    assert 'mocked' == test.field
+  assert 'origin' == test.field
+  mocker.patch.object(test, 'field', 'mocked')
+  assert 'mocked' == test.field
 ```
 這裡的 mock 和 unittest 的 mock 基本上都是一樣的，唯一的區別在於 pytest.mock 需要導入需要 mock 對象的詳細路徑。</br>
 
