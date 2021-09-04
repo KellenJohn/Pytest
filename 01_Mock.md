@@ -120,6 +120,7 @@ def test_succuse(mock_get_product_status_by_id):
 from mock import patch
 from mock_.product_impl import Product
 
+
 # Mock一個方法
 # @patch.object：物件、方法名
 @patch.object(Product, 'get_product_status_by_id')
@@ -143,8 +144,8 @@ def test_succuse(mock_get_product_status_by_id):
 ```python
 import unittest
 from unittest import mock
-
 from unittest_mock.product_impl import Product
+
 
 class TestProduct(unittest.TestCase):
 
@@ -163,24 +164,26 @@ if __name__ == "__main__":
     unittest.main()       
 ```
 #### 3.pytest.mock
-上面介紹的屬於 unittest 中的 mock，既然 unittest 中存在 mock 模塊，那麼 pytest 也存在 mock 模塊 pytest-mock。</br>
 pytest-mock 是一個 pytest 的插件，安裝即可使用。 它提供了一個名為 mocker 的 fixture，僅在當前測試 function 或 method 生效，而不用自行包裝。</br>
-相比 unittest，pytest 由於強大的外掛支援，使用者群體可能更大！</br>
 如果專案本身使用的框架是 pytest，則 Mock 更建議使用 pytest-mock 這個外掛</br>
 安裝：`pip install pytest-mock`</br>
 
+##### (1)mocker.patch
+mock 一個 object，是最常見的需求，由於 function 也是一個 object，以下以 function 舉例。</br>
 
-📝 摘要
+📝 程式摘要
 Mock 步驟如下：</br>
-* 使用 pytest 編寫測試方法，引數為 mocker
+* 使用 pytest 編寫測試方法，引數為 `mocker`
 * 例項化 Product 物件
 * 使用 mocker.patch() 方法對 get_product_status_by_id 方法進行 Mock，並設定返回值
+* 需要注意的是，`mocker.patch` 方法第一個引數必須是 Mock 物件的完整路徑
 * 呼叫並斷言
 
 📓 Example
 ```python
 import pytest
 from pytest_mock_.product_impl import Product
+
 
 def test_buy_product_success(mocker):
     """
@@ -196,62 +199,17 @@ def test_buy_product_success(mocker):
 
     # Mock方法
     # 注意：需要指定方法的完整路徑
-    # mocker.patch 的第一個引數必須是模擬物件的具體路徑，第二個引數用來指定返回值
+    # mocker.patch 的第一個引數必須是模擬物件的『具體路徑』，第二個引數用來指定『返回值』
     product.get_product_status_by_id = mocker.patch("product_impl.Product.get_product_status_by_id",
                                                     return_value=mock_value)
 
     # 呼叫購買產品的方法
     result = product.buy_product(1)
-
     assert result.get("status") == 0
-
-```
-需要注意的是，`mocker.patch` 方法第一個引數必須是 Mock 物件的完整路徑
-
-
-1.mock object
-mock 一個 object，是最常見的需求。 由於 function 也是一個 object，以下以 function 舉例。
-📓 Example
-```python
-import os 
-
-
-def rm(filename): 
-  os.remove(filename) 
- 
- def test_rm(mocker):
-  filename = 'test.file' 
-  mocker.patch('os.remove') 
-  rm(filename) 
-  os.remove.assert_called_once_with(filename) 
 ```
 
-這里在給 os.remove 打了一個 patch，讓它變成了一個 MagicMock。 然后利用 assert_called_once_with，查看它是否被調用一次，並且參數為 filename。</br>
-注意：只能對已經存在的東西使用 mock。</br>
 
-
-2.mock method
-有時，僅僅需要 mock 一個 object 里的 method，而無需 mock 整個 object。 例如，在對當前 object 的某個 method 進行測試時。 這時，可以用 patch.object。
-
-📓 Example
-```python
-class ForTest: 
-  field = 'origin' 
-  
-  def method(): 
-    pass 
-  
-  def test_for_test(mocker): 
-    test = ForTest() 
-    mock_method = mocker.patch.object(test, 'method') 
-    test.method() 
-    assert mock_method.called assert 'origin' == test.field 
-    mocker.patch.object(test, 'field', 'mocked') 
-    assert 'mocked' == test.field 
-```
-這裡的 mock 和 unittest 的 mock 基本上都是一樣的，唯一的區別在於 pytest.mock 需要導入需要 mock 對象的詳細路徑。</br>
-
-
+先將需要模擬的天氣接口，以及需要模擬的場景的代碼寫好，然後在進行遵循 pytest 的用例規範進行書寫關於 mock 的測試用例。</br>
 📓 Example weateher_r.py
 ```python
 class Mock_weather():
@@ -272,9 +230,8 @@ class Mock_weather():
     else:
       print('返回值錯誤！')
   
-  return result['status']
+    return result['status']
 ```
-先將需要模擬的天氣接口，以及需要模擬的場景的代碼寫好，然後在進行遵循 pytest 的用例規範進行書寫關於 mock 的測試用例。</br>
 
 📓 Example - test_01.py
 ```python
@@ -304,6 +261,51 @@ def test_02(mocker):
 if __name__ == '__main__':
   pytest.main(['-vs'])
 ```
+
+
+📓 Example
+```python
+import os 
+
+
+def rm(filename): 
+  os.remove(filename) 
+ 
+def test_rm(mocker):
+  filename = 'test.file' 
+  mocker.patch('os.remove') 
+  rm(filename) 
+  os.remove.assert_called_once_with(filename) 
+```
+
+這裡給 os.remove 打了一個 patch，讓它變成了一個 `MagicMock`。 然后利用 `assert_called_once_with`，查看它是否被調用一次，並且參數為 filename。</br>
+注意：只能對已經存在的東西使用 mock。</br>
+
+
+##### (2)mocker.patch.object
+有時，僅僅需要 mock 一個 object 里的 method，而無需 mock 整個 object。 例如，在對當前 object 的某個 method 進行測試時。 這時，可以用 patch.object。
+
+📓 Example
+```python
+class ForTest: 
+  field = 'origin' 
+  
+  def method(): 
+    pass 
+  
+  def test_for_test(mocker): 
+    test = ForTest() 
+    mock_method = mocker.patch.object(test, 'method') 
+    test.method() 
+    assert mock_method.called
+    
+    assert 'origin' == test.field
+    mocker.patch.object(test, 'field', 'mocked')
+    assert 'mocked' == test.field
+```
+這裡的 mock 和 unittest 的 mock 基本上都是一樣的，唯一的區別在於 pytest.mock 需要導入需要 mock 對象的詳細路徑。</br>
+
+
 
 通過上述代碼，安靜提供pytest中mock的2種方法：</br>
 第一種中的第一個參數是通過object的方式進行查找關於Mock_weather的類，然後在找到下面的需要mock的對象方法名稱，第2個參數表示mock的值。</br>
