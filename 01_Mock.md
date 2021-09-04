@@ -306,9 +306,8 @@ def test_for_test(mocker):
 這裡的 mock 和 unittest 的 mock 基本上都是一樣的，唯一的區別在於 pytest.mock 需要導入需要 mock 對象的詳細路徑。</br>
 
 
-
-通過上述代碼，安靜提供pytest中mock的2種方法：</br>
-第一種中的第一個參數是通過object的方式進行查找關於Mock_weather的類，然後在找到下面的需要mock的對象方法名稱，第2個參數表示mock的值。</br>
-第二種方法中的第一個參數是通過完整的路徑進行找到需要mock的對象，第2個參數是mock的值。</br>
-通過執行發現，兩種方法都是可以mock成功的。</br>
+通過上述代碼，提供pytest中mock的2種方法：</br>
+第一種中的第一個參數是通過 `object` 的方式進行查找關於 `Mock_weather` 的類，然後在找到下面的需要 `mock` 的對象方法名稱，第2個參數表示 `mock` 的值。</br>
+第二種方法中的第一個參數是通過完整的路徑進行找到需要 `mock` 的對象，第2個參數是 `mock` 的值。</br>
+通過執行發現，兩種方法都是可以 `mock` 成功的。</br>
 原文網址：https://kknews.cc/code/oq6nbb6.html</br>
