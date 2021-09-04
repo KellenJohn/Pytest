@@ -132,6 +132,7 @@ def test_succuse(mock_get_product_status_by_id):
  ```
 
 📝 摘要 - mock_open
+參考 [mock open](https://kkboxsqa.wordpress.com/2014/10/12/pythonmockhowto-%E6%9B%BF%E6%8F%9B%E5%85%A7%E5%BB%BA%E7%9A%84-open/)
 程式裡如果有對檔案做操作，免不了會直接用到 open() builtin，mock 很貼心地提供了 mock_open() helper：</br>
 ```python
 mock_open(mock=None, read_data='')
