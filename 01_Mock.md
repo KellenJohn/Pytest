@@ -52,7 +52,7 @@ Mock 物件的一般用法是這樣的：</br>
 ---
 
 ### mock, unittest mock, pytest.mock 不同 module 說明
-#### mock
+#### 1.mock
 
 假設 Product 類中有 2 個方法</br>
 * get_product_status_by_id - 方法還沒有實現
@@ -131,7 +131,7 @@ def test_succuse(mock_get_product_status_by_id):
  ```
 
 
-#### unittest mock
+#### 2.unittest mock
 📝 摘要
 * 匯入 unittest 框架中的 mock 檔案
 * 例項化 Product 物件
@@ -162,7 +162,7 @@ class TestProduct(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()       
 ```
-#### pytest.mock
+#### 3.pytest.mock
 上面介紹的屬於 unittest 中的 mock，既然 unittest 中存在 mock 模塊，那麼 pytest 也存在 mock 模塊 pytest-mock。</br>
 pytest-mock 是一個 pytest 的插件，安裝即可使用。 它提供了一個名為 mocker 的 fixture，僅在當前測試 function 或 method 生效，而不用自行包裝。</br>
 相比 unittest，pytest 由於強大的外掛支援，使用者群體可能更大！</br>
