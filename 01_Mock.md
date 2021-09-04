@@ -131,6 +131,33 @@ def test_succuse(mock_get_product_status_by_id):
   assert product.buy_product(1).get("status") == 0
  ```
 
+📝 摘要 - mock_open
+程式裡如果有對檔案做操作，免不了會直接用到 open() builtin，mock 很貼心地提供了 mock_open() helper：</br>
+```python
+mock_open(mock=None, read_data='')
+```
+
+其中 mock 可以提供自訂的 mock object (否則內部自動生出一個 MagicMock)，然後內部會將它 config 成像 open() 一樣，</br>
+被呼叫時會傳回 file-like object，read_data 則可以進一步設定 file-like object 的 read() 要傳回什麼內容。用起來像是這樣子：</br>
+
+```python
+>>> from mock import mock_open
+>>> open = mock_open(read_data='content') # 2
+>>> f = open('filename', 'rb')            # 1
+>>> f.read()                              # 2
+'content'
+>>> f.read()
+'content'
+>>>
+>>> with open('filename', 'rb') as f:     # 3
+...     print f.read()
+...
+content
+```
+
+* mock object 被呼叫時會傳回 file-like 的 mock object。
+* 之後呼叫 file-like 的 read() 固定會傳回 read_data 參數傳入的內容。
+* mock_open() 也支援 context manager 的用法。
 
 #### 2.unittest mock
 📝 摘要
