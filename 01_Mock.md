@@ -51,12 +51,13 @@ Mock 物件的一般用法是這樣的：</br>
 
 ---
 
-### mock, unittest mock, pytest.mock
+### mock, unittest mock, pytest.mock 不同 module 說明
 #### mock
 
 假設 Product 類中有 2 個方法</br>
 * get_product_status_by_id - 方法還沒有實現
 * buy_product - 方法依賴於 get_product_status_by_id 方法的返回值
+
 📓 Example - product_impl.py
 ```python
 class Product(object):
